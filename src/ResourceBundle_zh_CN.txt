@@ -1,0 +1,14 @@
+key.application.title=应用程序
+
+key.label.interval=间隔 (s)
+key.label.alert.percent=上下限 (%)
+key.label.stock.number=股票代码
+key.label.added.stock.number=已添加股票
+
+key.button.add=添加
+key.button.remove=删除
+key.button.pause=暂停
+key.button.resume=恢复
+key.button.reset=更新
+key.button.clear=清除
+key.button.send.email=发送邮件
