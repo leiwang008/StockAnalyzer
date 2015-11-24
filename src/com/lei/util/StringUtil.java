@@ -8,7 +8,7 @@ import java.util.Date;
 import org.safs.SAFSException;
 import org.safs.StringUtils;
 
-
+//Add comments for test in new branch
 public class StringUtil extends StringUtils{
 	public static final String DATE_PATTERN_1					= "MMM dd, h:mma z";
 	public static final String TIME_PATTERN_1					= "h:mma z";
