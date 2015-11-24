@@ -10,6 +10,7 @@ public class BinaryFileAnalyzer {
 	private boolean debug = false;
 	
 	//Modify on master branch
+	//Add on master branch
 	public void setDebug(boolean debug){
 		this.debug = debug;
 	}
