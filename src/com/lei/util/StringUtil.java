@@ -14,6 +14,7 @@ public class StringUtil extends StringUtils{
 	public static final String TIME_PATTERN_2					= "h:mm";
 	//test-new
 	//add in test-new
+	//add in master
 	/**
 	 * Remove the prefix from the original string, and return the result
 	 * <p>Example:<p>
