@@ -12,7 +12,7 @@ package cn.test;
 //
 //import com.google.api.translate.Language;
 //import com.google.api.translate.Translate;
-//
+//Add in master branch
 public class ExampleMain {
 //	private static Fetion fetion = null;
 //
