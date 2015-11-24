@@ -9,7 +9,7 @@ import java.io.IOException;
 public class BinaryFileAnalyzer {
 	private boolean debug = false;
 	
-	
+	//Modify on main branch
 	public void setDebug(boolean debug){
 		this.debug = debug;
 	}
