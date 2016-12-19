@@ -13,7 +13,7 @@ public class RetrieveWorker extends Thread{
 
 	public static final int	DEFAULT_INTERVAL_SECOND		= 30;
 	public static final double	DEFAULT_ALERT_PERCENT	= 0;
-	
+
 	/**
 	 * The URL string used to query the current stock information.<br>
 	 * Example of URL: http://www.google.com/finance/info?q=600317<br>
@@ -28,9 +28,9 @@ public class RetrieveWorker extends Thread{
 	 * If this value is 2, which means if the stock's price change is bigger than 2%, user will be alert.<br>
 	 */
 	private double	alertPercent=DEFAULT_ALERT_PERCENT;
-	
+
 	/**
-	 * The object to hold the stock's information. 
+	 * The object to hold the stock's information.
 	 */
 	private StokcInfomationTO stockTO;
 	private double	lastPrice;
@@ -38,10 +38,10 @@ public class RetrieveWorker extends Thread{
 	private double max;
 	private double min;
 	private StockTest stockTest;
-	
+
 	public final String PRICE_DOWN = "Down";
 	public final String PRICE_UP = "Up";
-	
+
 	/**
 	 * The field pleaseWait is used to control the pause of a thread.
 	 */
@@ -54,12 +54,12 @@ public class RetrieveWorker extends Thread{
 	 * The field mailSended is used to mark if the alert email has been sent or not
 	 * If the alert email has been sent, we should change this field to true so that
 	 * the alert email will not be sent again.
-	 * If you want to receive again the alert email, you should reset this field to 
+	 * If you want to receive again the alert email, you should reset this field to
 	 * false by the button buttonSendEmail of StockTest
 	 * @see StockTest
 	 */
 	private boolean mailSended = true;
-	
+
 	public RetrieveWorker(String stockURL){
 		this.stockQueryURL = stockURL;
 		this.lastPrice = 0.0;
@@ -67,7 +67,7 @@ public class RetrieveWorker extends Thread{
 		this.max = 0.00;
 		this.min = 100000.00;
 	}
-	
+
 	public RetrieveWorker(String stockURL,int intervalTime){
 		this.stockQueryURL = stockURL;
 		this.intervalTime = intervalTime;
@@ -76,7 +76,7 @@ public class RetrieveWorker extends Thread{
 		this.max = 0.00;
 		this.min = 100000.00;
 	}
-	
+
 	public RetrieveWorker(String stockURL,int intervalTime, double alertPercent){
 		this.stockQueryURL = stockURL;
 		this.intervalTime = intervalTime;
@@ -86,7 +86,7 @@ public class RetrieveWorker extends Thread{
 		this.min = 100000.00;
 		this.alertPercent = alertPercent;
 	}
-	
+
 	public RetrieveWorker(String stockURL,Integer intervalTime, Double alertPercent){
 		this.stockQueryURL = stockURL;
 		this.lastPrice = 0.0;
@@ -96,7 +96,7 @@ public class RetrieveWorker extends Thread{
 		if(intervalTime!=null)	this.intervalTime = intervalTime.intValue();
 		if(alertPercent!=null)this.alertPercent = alertPercent.doubleValue();
 	}
-	
+
 	public StockTest getStockTest() {
 		return stockTest;
 	}
@@ -108,11 +108,11 @@ public class RetrieveWorker extends Thread{
 	public synchronized double getAlertPercent() {
 		return alertPercent;
 	}
-	
+
 	public synchronized void setAlertPercent(double alertPercent){
 		this.alertPercent = alertPercent;
 	}
-	
+
 	public synchronized int getIntervalTime() {
 		return intervalTime;
 	}
@@ -128,7 +128,7 @@ public class RetrieveWorker extends Thread{
 	public synchronized void setStockInfo(StokcInfomationTO stockInfo) {
 		this.stockTO = stockInfo;
 	}
-	
+
 	public synchronized boolean getPriceChanged() {
 		return priceChanged;
 	}
@@ -160,13 +160,13 @@ public class RetrieveWorker extends Thread{
 		BufferedReader input = null;
 		long beginTime = new Date().getTime();
 		long endTime = beginTime;
-		
+
 		while (true) {
 			//Check the property pleaseStop, if true, stop this thread.
 			if(this.isPleaseStop()){
 				break;
 			}
-			
+
 			synchronized(this){
 				if(isPleaseWait()){
 					try {
@@ -176,7 +176,7 @@ public class RetrieveWorker extends Thread{
 					}
 				}
 			}
-			
+
 			try {
 				URL request = new URL(stockQueryURL);
 				input = new BufferedReader(new InputStreamReader(request.openStream()));
@@ -210,7 +210,7 @@ public class RetrieveWorker extends Thread{
 							stock.appendTextAreaStockInfo(info);
 						}
 						//2. We may send a sms to our mobile phone.
-						
+
 						//3. We may send a email to our mail box.
 						synchronized(this){
 							if(!isMailSended()){
