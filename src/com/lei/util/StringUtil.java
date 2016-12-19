@@ -8,6 +8,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 //Add in test-new
 import org.safs.SAFSException;
 import org.safs.StringUtils;
@@ -32,7 +33,7 @@ public class StringUtil extends StringUtils{
 		if(original==null) return "";
 		if(prefix==null) return original;
 		if(original.equals(prefix)) return "";
-		
+
 		if(original.length()>prefix.length()){
 			if(original.startsWith(prefix)){
 				original = original.substring(prefix.length());
@@ -54,9 +55,9 @@ public class StringUtil extends StringUtils{
 		if(original==null) return "";
 		if(suffix==null) return original;
 		if(original.equals(suffix)) return "";
-		
+
 		if(original.length()>suffix.length()){
-			if(original.endsWith(suffix)){				
+			if(original.endsWith(suffix)){
 				int l = original.length() - suffix.length();
 				original = original.substring(0, l);
 			}
@@ -65,7 +66,7 @@ public class StringUtil extends StringUtils{
 	}
 
 	/**
-	 * Remove any leading and\or trailing double quotes.  
+	 * Remove any leading and\or trailing double quotes.
 	 * <p>Example:<p>
 	 * original = "c:\file.txt" (with quotes)
 	 * the result will be 'c:\file.txt'  (no quotes at all)
@@ -77,7 +78,7 @@ public class StringUtil extends StringUtils{
 		original = removeSuffix(original, "\"");
 		return original;
 	}
-	
+
 	/**
 	 * @param value				A string represents an integer value.
 	 * @return					An Integer converted from string
@@ -85,12 +86,12 @@ public class StringUtil extends StringUtils{
 	 */
 	public static Integer convertToInteger(String value){
 		Integer result = null;
-		
+
 		try{
 			result = Integer.parseInt(value);
 		}catch (NumberFormatException e) {
 		}
-		
+
 		return result;
 	}
 
@@ -102,12 +103,12 @@ public class StringUtil extends StringUtils{
 	public static int convertToPrimitiveInt(String value){
 		int result = 0;
 		Double intValue = convertToDouble(value);
-		
+
 		if(intValue!=null) result = intValue.intValue();
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * @param value				A string represents an integer value.
 	 * @return					A Double converted from string
@@ -115,15 +116,15 @@ public class StringUtil extends StringUtils{
 	 */
 	public static Double convertToDouble(String value){
 		Double result = null;
-		
+
 		try{
 			result = Double.parseDouble(value);
 		}catch (NumberFormatException e) {
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * @param value				A string represents an integer value.
 	 * @return					A double converted from string
@@ -132,12 +133,12 @@ public class StringUtil extends StringUtils{
 	public static double convertToPrimitiveDouble(String value){
 		double result = 0.0;
 		Double doubleValue = convertToDouble(value);
-		
+
 		if(doubleValue!=null) result = doubleValue.doubleValue();
-		
+
 		return result;
 	}
-	
+
 	public static Date convertStringToDate(String dateString, String pattern){
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		Date result = null;
@@ -145,21 +146,21 @@ public class StringUtil extends StringUtils{
 			result = format.parse(dateString);
 		} catch (ParseException e) {
 		}
-		
+
 		return result;
 	}
-	
+
 	public static String convertDateToString(Date date, String pattern){
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		String result = format.format(date);
-		
+
 		return result;
 	}
-	
+
 	public static String convertToPercentage(double percentage){
 		return getFormattedDoubleString(percentage)+"%";
 	}
-	
+
 	public static String getFormattedDoubleString(double value){
 		NumberFormat format = NumberFormat.getInstance();
 		format.setMaximumFractionDigits(2);
