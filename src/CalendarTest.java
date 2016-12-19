@@ -51,7 +51,7 @@ public class CalendarTest {
 //
   			System.out.println(htmlContent.toString());
 
-//  	  		CalendarService myService = new CalendarService("exampleCo-exampleApp-1.0");
+//  	  	CalendarService myService = new CalendarService("exampleCo-exampleApp-1.0");
 //    		//myService.setUserCredentials("root@gmail.com", "pa$$word");
 //			myService.setUserCredentials("leiwang008@yahoo.com.cn", "Xudongsun3685");
 //
@@ -65,7 +65,6 @@ public class CalendarTest {
 //				CalendarEntry entry = resultFeed.getEntries().get(i);
 //				System.out.println("\t" + entry.getTitle().getPlainText());
 //			}
-
 
     	}catch(Exception e){
     		e.printStackTrace();
