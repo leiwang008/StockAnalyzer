@@ -335,7 +335,7 @@ public class GetText implements Serializable {
 		if (args.length < 1) {
 			System.out.println("Need at least one arg as the key to the resource bundle, then params");
 		}
-		List params = new LinkedList();
+		List<String> params = new LinkedList<String>();
 		for(int k=1; k<args.length; k++) params.add(args[k]);
 		GetText gt1 = new GetText();
 		GetText gt2 = new GetText();
