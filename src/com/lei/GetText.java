@@ -258,7 +258,7 @@ public class GetText implements Serializable {
 	 * <br><em>Assumptions:</em>  calls 'convert(text, Collection of params)'
 	 **/
 	public String convert (String text, String alttext, String p1) {
-		Collection c = new LinkedList();
+		Collection<String> c = new LinkedList<String>();
 		c.add(p1);
 		return convert(text, alttext, c);
 	}
@@ -267,7 +267,7 @@ public class GetText implements Serializable {
 	 * <br><em>Assumptions:</em>  calls 'convert(text, Collection of params)'
 	 **/
 	public String convert (String text, String alttext, String p1, String p2) {
-		Collection c = new LinkedList();
+		Collection<String> c = new LinkedList<String>();
 		c.add(p1);
 		c.add(p2);
 		return convert(text, alttext, c);
