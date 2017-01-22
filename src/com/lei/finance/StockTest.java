@@ -6,14 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import javax.mail.MessagingException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -39,10 +37,10 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 	//workers will contain a pair(stockId,aRetrieveWorker)
 	private HashMap<String,RetrieveWorker> workers;
 	public String resourceBundleName = ""+GetText.DEFAULT_BUNDLE_NAME;
-	
+
 	public static final int	APPLICATION_PANEL_WIDTH 				= 900;
 	public static final int	APPLICATION_PANEL_HEIGHT 				= 400;
-	
+
 	/**
 	 * This url query will return a string info containing stock's "last price", "change", "quantity" etc.
 	 * Such as: // [ { "id": "689364" ,"t" : "600108" ,"e" : "SHA" ,"l" : "6.51" ,"l_fix" : "6.51" ,"l_cur" : "CN¥6.51" ,"s": "0" ,"ltt":"3:00PM GMT+8" ,"lt" : "Sep 18, 3:00PM GMT+8" ,"lt_dts" : "2015-09-18T15:00:04Z" ,"c" : "+0.07" ,"c_fix" : "0.07" ,"cp" : "1.09" ,"cp_fix" : "1.09" ,"ccol" : "chg" ,"pcls_fix" : "6.44" } ]
@@ -52,13 +50,13 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 	 * This url query will return a whole html document containing the stock's detail information.
 	 */
 	public static final String KEY_STOCK_INFO_URL_PREFIX				= "http://www.google.com/finance?q=";
-		
+
 	public static final String KEY_APPLICATION_TITLE		= "key.application.title";
 	public static final String KEY_LABEL_INTERVAL_TIME		= "key.label.interval";
 	public static final String KEY_LABEL_ALERT_PERCENT		= "key.label.alert.percent";
 	public static final String KEY_LABEL_STOCK_NUMBER		= "key.label.stock.number";
 	public static final String KEY_LABEL_ADDED_STOCK_NUMBER	= "key.label.added.stock.number";
-	
+
 	public static final String KEY_BUTTON_ADD				= "key.button.add";
 	public static final String KEY_BUTTON_REMOVE			= "key.button.remove";
 	public static final String KEY_BUTTON_PAUSE				= "key.button.pause";
@@ -66,27 +64,27 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 	public static final String KEY_BUTTON_RESET				= "key.button.reset";
 	public static final String KEY_BUTTON_CLEAR				= "key.button.clear";
 	public static final String KEY_BUTTON_SEND_EMAIL		= "key.button.send.email";
-	
+
 	private GetText text;
-	
+
 	private JPanel panelInput;
 	private JPanel panelButton;
 	private JScrollPane panelInformation;
-	
+
 	private JLabel labelIntervalTime;
 	private JLabel labelAlertPercent;
 	private JLabel labelStockNumber;
 	private JLabel labelAddedStockNumber;
-	
+
 	//
 	private JTextField textfieldIntervalTime;
-	
+
 	private JTextField textfieldAlertPercent;
-	
+
 	private JTextField textfieldStockNumber;
-	
+
 	private JComboBox  comboboxAddedStockNumber;
-	
+
 	//buttonAdd is used to add a new stock to our hashmap workers
 	private JButton buttonAdd;
 	//buttonRemove is used to remove a added stock from our hashmap workers
@@ -103,7 +101,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 	private JButton buttonClear;
 	//buttonSendEmail will enable worker to send a email if the stock price is beyond the alert price.
 	private JButton buttonSendEmail;
-	
+
 	private JTextArea textAreaStockInfo;
 
 	public void clearTextAreaStockInfo() {
@@ -119,7 +117,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 
 	public String getSelectedStockNumber() {
 		String selectedStockNumber = null;
-		
+
 		if(comboboxAddedStockNumber!=null){
 			selectedStockNumber = String.valueOf(comboboxAddedStockNumber.getSelectedItem());
 		}
@@ -136,7 +134,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
-	
+
 	private void initialMisc(){
 		try {
 			String mailServer = System.getProperty(PROPERTY_MAILSERVERHOST);
@@ -144,13 +142,13 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			String mailServerPotocol = System.getProperty(PROPERTY_MAILSERVERPOTOCOL);
 			String user = System.getProperty(PROPERTY_MAILAUTHUSER);
 			String pass = System.getProperty(PROPERTY_MAILAUTHPASS);
-			
+
 			if(mailServer==null){
 				mailer = new Mailer();
 			}else{
 				int port = -1;
 				Protocol protocol = null;
-				
+
 				if(mailServerPort==null){
 					port = Mailer.DEFAULT_PORT;
 				}else{
@@ -161,25 +159,25 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 				}else{
 					protocol = Protocol.get(mailServerPotocol);
 				}
-				
+
 				if(user!=null && pass!=null){
 					mailer = new Mailer(mailServer, port, protocol, user, pass);
 				}else{
 					mailer = new Mailer(mailServer, port, protocol);
 				}
 			}
-			
+
 			//mailer.setSender("yourmail@company.com");
 		} catch (Exception e) {
 			IndependantLog.error("fail to initialize the Mailer, due to "+StringUtil.debugmsg(e));
 		}
 	}
-	
+
 	private void initialResourceReader(){
 //		text = new GetText(resourceBundleName,Locale.getDefault());
 		text = new GetText(resourceBundleName,Locale.ENGLISH);
 	}
-	
+
 	private void initialComponents(){
 		this.setTitle(text.text(StockTest.KEY_APPLICATION_TITLE));
 		GridLayout layoutPanel = new GridLayout(3,1);
@@ -188,7 +186,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 //        this.setLayout(gridbagLayout);
 //        GridBagConstraints constraints = new GridBagConstraints();
 
-		
+
 //		int inputPanelWidth=400, inputPanelHeight=30;
 		panelInput = new JPanel();
 		panelInput.setPreferredSize(new Dimension(APPLICATION_PANEL_WIDTH,APPLICATION_PANEL_HEIGHT*4/20));
@@ -217,7 +215,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 		panelInput.add(labelAddedStockNumber);
 		panelInput.add(comboboxAddedStockNumber);
 		this.add(panelInput);
-		
+
 		panelButton = new JPanel();
 		panelButton.setPreferredSize(new Dimension(APPLICATION_PANEL_WIDTH,APPLICATION_PANEL_HEIGHT/20));
 //		constraints.gridheight=1;
@@ -253,7 +251,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 		panelButton.add(buttonClear);
 		panelButton.add(buttonSendEmail);
 		this.add(panelButton);
-		
+
 		panelInformation = new JScrollPane();
 		panelInformation.setPreferredSize(new Dimension(APPLICATION_PANEL_WIDTH,APPLICATION_PANEL_HEIGHT*15/20));
 //		constraints.gridheight=GridBagConstraints.REMAINDER;
@@ -264,14 +262,14 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 		panelInformation.setViewportView(textAreaStockInfo);
 		this.add(panelInformation);
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		String debugmsg = this.getClass().getName()+".actionPerformed(): ";
 		Object source = e.getSource();
 		String stockID = null;
 		Integer intervalTime = StringUtil.convertToInteger(this.textfieldIntervalTime.getText().trim());
 		Double alertPercent = StringUtil.convertToDouble(this.textfieldAlertPercent.getText().trim());
-		
+
 		if(source.equals(buttonAdd)){
 			//If Add a stock, then we read the stock ID from textfieldStockNumber
 			stockID = this.textfieldStockNumber.getText().trim();
@@ -287,7 +285,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			System.err.println(debugmsg+"The stockID is wrong, please check.");
 			return;
 		}
-		
+
 		if(source.equals(buttonAdd) || source.equals(buttonReset)){
 			if(stockID==null || stockID.equals("") || stockID.length()!=6){
 				System.err.println(debugmsg+"The stockID is wrong, please check.");
@@ -307,7 +305,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			this.enableWorkerToSendEmail(stockID);
 		}
 	}
-	
+
 	public void itemStateChanged(ItemEvent e) {
 		String debugmsg = this.getClass().getName()+".itemStateChanged(): ";
 		Object source = e.getSource();
@@ -322,7 +320,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			System.err.println(debugmsg+"The stockID is wrong, please check.");
 			return;
 		}
-		
+
 		if(source.equals(comboboxAddedStockNumber)){
 			//Update the state of buttons.
 			updateButtonState(stockID);
@@ -330,7 +328,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			updateTextFileds(stockID);
 		}
 	}
-	
+
 	public void addOrResetWorker(String stockID,RetrieveWorker worker){
 		RetrieveWorker storedWorker = workers.get(stockID);
 		if(storedWorker==null){
@@ -353,7 +351,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			storedWorker.setIntervalTime(worker.getIntervalTime());
 		}
 	}
-	
+
 	public void pauseWorker(String stockID){
 		String debugmsg = this.getClass().getName()+".pauseWorker(): ";
 		RetrieveWorker worker = workers.get(stockID);
@@ -364,7 +362,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			updateButtonState(stockID);
 		}
 	}
-	
+
 	public void resumeWorker(String stockID){
 		String debugmsg = this.getClass().getName()+".resumeWorker(): ";
 		RetrieveWorker worker = workers.get(stockID);
@@ -378,7 +376,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			updateButtonState(stockID);
 		}
 	}
-	
+
 	public void removeWorker(String stockID){
 		String debugmsg = this.getClass().getName()+".removeWorker(): ";
 		RetrieveWorker worker = workers.get(stockID);
@@ -394,14 +392,14 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			//Remove also this ID from the combo box comboboxAddedStockNumber
 			comboboxAddedStockNumber.removeItem(stockID);
 			comboboxAddedStockNumber.updateUI();
-			
+
 			//If no worker exists, we should disable all buttons except 'Add' button
 			if(workers.size()==0){
 				updateButtonState(null);
 			}
 		}
 	}
-	
+
 	public void enableWorkerToSendEmail(String stockID){
 		String debugmsg = this.getClass().getName()+".enableWorkerToSendEmail(): ";
 		RetrieveWorker worker = workers.get(stockID);
@@ -415,10 +413,10 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			updateButtonState(stockID);
 		}
 	}
-	
+
 	public void updateButtonState(String stockID){
 		String debugmsg = this.getClass().getName()+".updateButtonState(): ";
-		
+
 		//If the stockID is null, we should disable all buttons except 'Add' button
 		if(stockID==null){
 			this.buttonResume.setEnabled(false);
@@ -428,7 +426,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			this.buttonSendEmail.setEnabled(false);
 			return;
 		}
-		
+
 		RetrieveWorker worker = workers.get(stockID);
 		if(worker==null){
 			System.err.println(debugmsg+"The stock has not been added: "+stockID);
@@ -444,7 +442,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 				this.buttonRemove.setEnabled(true);
 				this.buttonReset.setEnabled(true);
 			}
-			
+
 			if(worker.isMailSended()){
 				this.buttonSendEmail.setEnabled(true);
 			}else{
@@ -452,10 +450,10 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			}
 		}
 	}
-	
+
 	public void updateTextFileds(String stockID){
 		String debugmsg = this.getClass().getName()+".updateTextFileds(): ";
-		
+
 		RetrieveWorker worker = workers.get(stockID);
 		if(worker==null){
 			System.err.println(debugmsg+"The stock has not been added: "+stockID);
@@ -465,11 +463,11 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 //			this.textAreaStockInfo.append(worker.getStockInfo()+"\n");
 		}
 	}
-	
+
 	private static void processArgs(String[] args){
 		getSysProperty(PROPERTY_HTTPPROXYHOST,WebProxyDetector.INSTANCE.getProxyServerName());
 		getSysProperty(PROPERTY_HTTPPROXYPORT, String.valueOf(WebProxyDetector.INSTANCE.getProxyServerPort()));
-		
+
 		getSysProperty(PROPERTY_MAILSERVERHOST, getConfig(PROPERTY_MAILSERVERHOST));
 		getSysProperty(PROPERTY_MAILSERVERPORT, getConfig(PROPERTY_MAILSERVERPORT));
 		getSysProperty(PROPERTY_MAILSERVERPOTOCOL, getConfig(PROPERTY_MAILSERVERPOTOCOL));
@@ -477,7 +475,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 		getSysProperty(PROPERTY_MAILAUTHUSER, getConfig(PROPERTY_MAILAUTHUSER));
 		getSysProperty(PROPERTY_MAILAUTHPASS, getConfig(PROPERTY_MAILAUTHPASS));
 	}
-	
+
 	private static String getConfig(String key){
 		try{
 			return config.getString(key).trim();
@@ -486,9 +484,9 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			return null;
 		}
 	}
-	
+
 	private static String getSysProperty(String name, String defaultValue){
-		String value = System.getProperty(name); 
+		String value = System.getProperty(name);
 		if(value==null && defaultValue!=null){
 			value = defaultValue;
 			System.setProperty(name, value);
@@ -500,7 +498,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 		}
 		return value;
 	}
-	
+
 	public static final String PROPERTY_HTTPPROXYHOST 		= "http.proxyHost";
 	public static final String PROPERTY_HTTPPROXYPORT 		= "http.proxyPort";
 	public static final String PROPERTY_MAILSERVERHOST 		= "key.mail.server.host";
@@ -509,11 +507,11 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 	public static final String PROPERTY_MAILRECIPIENTS		= "key.mail.recipients";
 	public static final String PROPERTY_MAILAUTHUSER		= "key.mail.auth.user";
 	public static final String PROPERTY_MAILAUTHPASS		= "key.mail.auth.pass";
-	
+
 	private static final ResourceBundle config = ResourceBundle.getBundle("Config");
-	
+
 	private Mailer mailer = null;
-	
+
 	public Mailer getMailer() {
 		return mailer;
 	}
@@ -533,9 +531,9 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 			IndependantLog.error("Fail to send message, due to "+StringUtil.debugmsg(e));
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * It accept the following system properties:
 	 * <ul>
 	 * <li>-Dhttp.proxyHost
@@ -547,7 +545,7 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 	 * <li>-Dkey.mail.auth.user
 	 * <li>-Dkey.mail.auth.pass
 	 * </ul>
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args){
@@ -560,9 +558,9 @@ public class StockTest extends JFrame implements ActionListener, ItemListener{
 				System.out.println(message);
 			}
 		});
-		
+
 		processArgs(args);
-		
+
 		new StockTest();
 	}
 
