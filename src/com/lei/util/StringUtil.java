@@ -167,4 +167,84 @@ public class StringUtil extends StringUtils{
 		format.setMinimumFractionDigits(2);
 		return format.format(value);
 	}
+
+	/**
+	 * @param delimitedString String, the delimited string
+	 * @param delimiter String, the delimiter
+	 * @return String, the last token of the delimited string
+	 */
+	public static String getLastDelimitedToken(String delimitedString, String delimiter){
+		String lastToken = null;
+		if(delimitedString==null || delimiter==null || delimiter==""){
+			lastToken = delimitedString;
+		}else{
+			int index = delimitedString.lastIndexOf(delimiter);
+			if(index>-1){
+				lastToken = delimitedString.substring(index+delimiter.length());
+			}else{
+				lastToken = delimitedString;
+			}
+		}
+
+		debug("\ndelimitedString: '"+delimitedString+"'\ndelimiter: '"+delimiter+"'\nlastToken: '"+lastToken+"'");
+		return lastToken;
+	}
+
+	/**
+	 * Should be launched with "-ea"|"-enableassertions" VM parameters.
+	 */
+	private static void testGetLastDelimitedToken(){
+		String delimitedString = "org.safs.rest.Response";
+		String delimiter = ".";
+		String expected = "Response";
+		String result = null;
+
+		result = getLastDelimitedToken(delimitedString, delimiter);
+		assert expected.equals(result): "Expected '"+expected+"' != actual '"+result+"'";
+		delimitedString = "Response";
+		result = getLastDelimitedToken(delimitedString, delimiter);
+		assert expected.equals(result): "Expected '"+expected+"' != actual '"+result+"'";
+
+		delimitedString = "org/safs/rest/Response";
+		delimiter = "/";
+		result = getLastDelimitedToken(delimitedString, delimiter);
+		assert expected.equals(result): "Expected '"+expected+"' != actual '"+result+"'";
+		delimitedString = "Response";
+		result = getLastDelimitedToken(delimitedString, delimiter);
+		assert expected.equals(result): "Expected '"+expected+"' != actual '"+result+"'";
+
+		delimitedString = "org==safs==rest==Response";
+		delimiter = "==";
+		result = getLastDelimitedToken(delimitedString, delimiter);
+		assert expected.equals(result): "Expected '"+expected+"' != actual '"+result+"'";
+		delimitedString = "Response";
+		result = getLastDelimitedToken(delimitedString, delimiter);
+		assert expected.equals(result): "Expected '"+expected+"' != actual '"+result+"'";
+		delimiter = "";
+		result = getLastDelimitedToken(delimitedString, delimiter);
+		assert expected.equals(result): "Expected '"+expected+"' != actual '"+result+"'";
+
+		delimitedString = "org safs rest Response";
+		delimiter = " ";
+		result = getLastDelimitedToken(delimitedString, delimiter);
+		assert expected.equals(result): "Expected '"+expected+"' != actual '"+result+"'";
+
+		delimiter = null;
+		delimitedString = "org/safs/rest/Response";
+		expected = delimitedString;
+		result = getLastDelimitedToken(delimitedString, delimiter);
+		assert expected.equals(result): "Expected '"+expected+"' != actual '"+result+"'";
+
+	}
+
+	public static void main(String[] args){
+		testGetLastDelimitedToken();
+	}
+
+	protected static void debug(String message){
+		System.out.println(message);
+	}
+	protected static void error(String message){
+		System.err.println(message);
+	}
 }
