@@ -6,5 +6,7 @@
 	<classpathentry kind="lib" path="dependency/jna.zip"/>
 	<classpathentry kind="lib" path="dependency/safs.jar"/>
 	<classpathentry kind="lib" path="dependency/comm.jar"/>
+	<classpathentry kind="lib" path="dependency/kafka-clients-1.0.1.jar"/>
+	<classpathentry kind="lib" path="dependency/slf4j-api-1.7.25.jar"/>
 	<classpathentry kind="output" path="class"/>
 </classpath>
